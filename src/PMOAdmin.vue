@@ -18,7 +18,7 @@ import AdminNavbar from './components/AdminNavbar.vue'
 import AdminPublishers from './components/AdminPublishers.vue'
 import AdminLocations from './components/AdminLocations.vue'
 
-import PMOLib from './lib/PMOLib.js'
+import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 export default {

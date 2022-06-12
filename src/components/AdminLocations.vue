@@ -80,7 +80,7 @@ import DayJS from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 DayJS.extend(utc);
 
-import PMOLib from '@/lib/PMOLib';
+import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 export default {

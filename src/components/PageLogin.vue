@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import PMOLib from '@/lib/PMOLib.js'
+import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 export default {

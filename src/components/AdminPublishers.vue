@@ -39,7 +39,7 @@
 <script>
 import CreateEditPublisher from './CreateEditPublisher.vue';
 
-import PMOLib from '@/lib/PMOLib';
+import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 export default {

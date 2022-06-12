@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import PMOLib from '@/lib/PMOLib';
+import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 function createOrEditPublisher(create, publisher) {
