@@ -1,0 +1,112 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Set your colors
+$primary: #5065a8;
+$primary-light: findLightColor($primary);
+$primary-dark: findDarkColor($primary);
+$primary-invert: findColorInvert($primary);
+$money: #286400;
+$money-light: findLightColor($money);
+$money-dark: findDarkColor($money);
+$money-invert: findColorInvert($money);
+$gold: #DAA520;
+$gold-light: findLightColor($gold);
+$gold-dark: findDarkColor($gold);
+$gold-invert: findColorInvert($gold);
+
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+
+// Lists and maps
+$custom-colors: null !default;
+$custom-shades: null !default;
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: mergeColorMaps(
+    (
+        "gold": (
+            $gold,
+            $gold-invert,
+            $gold-light,
+            $gold-dark
+        ),
+        "money": (
+            $money,
+            $money-invert,
+            $money-light,
+            $money-dark
+        ),
+        "white": (
+            $white,
+            $black,
+        ),
+        "black": (
+            $black,
+            $white,
+        ),
+        "light": (
+            $light,
+            $light-invert,
+        ),
+        "dark": (
+            $dark,
+            $dark-invert,
+        ),
+        "primary": (
+            $primary,
+            $primary-invert,
+            $primary-light,
+            $primary-dark,
+        ),
+        "link": (
+            $link,
+            $link-invert,
+            $link-light,
+            $link-dark,
+        ),
+        "info": (
+            $info,
+            $info-invert,
+            $info-light,
+            $info-dark,
+        ),
+        "success": (
+            $success,
+            $success-invert,
+            $success-light,
+            $success-dark,
+        ),
+        "warning": (
+            $warning,
+            $warning-invert,
+            $warning-light,
+            $warning-dark,
+        ),
+        "danger": (
+            $danger,
+            $danger-invert,
+            $danger-light,
+            $danger-dark,
+        ),
+    ),
+    $custom-colors
+);
+
+$navbar-item-hover-background-color: $primary;
+$navbar-item-active-color: $primary-invert;
+$navbar-item-hover-color: $primary-invert;
+$navbar-item-active-background-color: $primary;
+$navbar-dropdown-item-hover-color: $primary-invert;
+
+$modal-content-width: 600px;
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
+
