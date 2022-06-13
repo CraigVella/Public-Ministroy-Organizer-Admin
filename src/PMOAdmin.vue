@@ -57,7 +57,7 @@ export default {
     },
     logout() {
       this.loading = true;
-      adminLib.logout().then(() => {
+      adminLib.logout(true).then(() => {
         this.userObj = {};
         this.loading = false;
         this.logged_in = false;
