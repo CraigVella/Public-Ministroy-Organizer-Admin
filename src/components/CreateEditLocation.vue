@@ -16,26 +16,22 @@
             </b-field>
             <b-field label="Address">
                 <b-input
-                    v-model="localLocation.address"
-                    required>
+                    v-model="localLocation.address">
                 </b-input>
             </b-field>
             <b-field label="City">
                 <b-input
-                    v-model="localLocation.city"
-                    required>
+                    v-model="localLocation.city">
                 </b-input>
             </b-field>
             <b-field label="State">
                 <b-input
-                    v-model="localLocation.state"
-                    required>
+                    v-model="localLocation.state">
                 </b-input>
             </b-field>
             <b-field label="Zip">
                 <b-input
-                    v-model="localLocation.zip"
-                    required>
+                    v-model="localLocation.zip">
                 </b-input>
             </b-field>
         </section>
@@ -57,6 +53,8 @@
 <script>
 import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
+
+import validator from 'validator';
 
 function createOrEditLocation(create, location) {
     if (create) {
@@ -101,7 +99,15 @@ export default {
                     onConfirm: () => this.$emit('cancel')
                 })
         },
+        validate() {
+            if (validator.isEmpty(this.localLocation.name,{ ignore_whitespace:true })) {
+                adminLib.generalError(this,"Location name is a required field and cannot be left empty");
+                return false;
+            }
+            return true;
+        },
         submit() {
+            if (!this.validate()) return;
             this.loading = true;
             createOrEditLocation(this.isNew, this.localLocation).then(res => {
                 if (res.api.status.error) {

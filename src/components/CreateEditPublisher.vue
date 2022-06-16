@@ -65,6 +65,9 @@
 import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
+import validator from 'validator';
+import libPN from 'libphonenumber-js';
+
 function createOrEditPublisher(create, publisher) {
     if (create) {
         return adminLib.createPublisher(
@@ -115,6 +118,7 @@ export default {
                 })
         },
         submit() {
+            if (!this.fieldsValid()) return;
             this.loading = true;
             createOrEditPublisher(this.isNew,this.localPublisher).then(res => {
                 if (res.api.status.error) {
@@ -127,6 +131,34 @@ export default {
             }).finally(()=>{
                 this.loading = false;
             });
+        },
+        fieldsValid() {
+            if (!validator.isMobilePhone(this.localPublisher.phone)) {
+                adminLib.generalError(this, "Phone number must be populated and valid");
+                return false;
+            } else {
+                let pn = libPN(this.localPublisher.phone,'US');
+                this.localPublisher.phone = pn.formatNational();
+            }
+            if (!validator.isEmail(this.localPublisher.email)) {
+                adminLib.generalError(this, "Email address must be populated and valid");
+                return false;
+            } else {
+                this.localPublisher.email = validator.normalizeEmail(this.localPublisher.email);
+            }
+            if (validator.isEmpty(this.localPublisher.firstName, { ignore_whitespace:true })) {
+                adminLib.generalError(this, "First name is a required field");
+                return false;
+            }
+            if (validator.isEmpty(this.localPublisher.lastName, { ignore_whitespace:true })) {
+                adminLib.generalError(this, "Last name is a required field");
+                return false;
+            }
+            if (validator.isEmpty(this.localPublisher.pin, { ignore_whitespace:true })) {
+                adminLib.generalError(this, "Pin is a required field");
+                return false;
+            }
+            return true;
         }
     }
 }

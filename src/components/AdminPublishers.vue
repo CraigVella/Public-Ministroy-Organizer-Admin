@@ -12,7 +12,7 @@
                     <p :class="props.row.congAdmin === 1 ? 'has-text-weight-bold has-text-success' : ''">{{props.row.lastName}}</p>
                 </b-table-column>
                 <b-table-column field="phone" label="Phone" v-slot="props">
-                    <a :href="'tel:'+props.row.phone">{{props.row.phone}}</a>
+                    <a :href="getPhoneURI(props.row.phone)">{{props.row.phone}}</a>
                 </b-table-column>
                 <b-table-column field="email" label="Email" v-slot="props">
                     <a :href="'mailto:'+props.row.email">{{props.row.email}}</a>
@@ -41,6 +41,8 @@ import CreateEditPublisher from './CreateEditPublisher.vue';
 
 import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
+
+import libPN from 'libphonenumber-js'
 
 export default {
     name: "AdminPublishers",
@@ -88,6 +90,10 @@ export default {
         onPublisherReturn() {
             this.createEditProps.open = false;
             this.reloadPublishers();
+        },
+        getPhoneURI(phone) {
+            const returnPhone = libPN(phone,'US');
+            return returnPhone.getURI();
         }
     },
     components: {

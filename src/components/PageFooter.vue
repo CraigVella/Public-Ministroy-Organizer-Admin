@@ -18,6 +18,8 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+.footer {
+    margin-top: auto;
+}
 </style>
