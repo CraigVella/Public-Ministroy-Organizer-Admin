@@ -17,6 +17,9 @@
             </b-navbar-item>
         </template>
         <template #end>
+            <b-navbar-item @click="goMainApp">
+                <b-icon icon='arrow-left-circle'></b-icon>&nbsp; Back to Frontend
+            </b-navbar-item>
             <b-navbar-item @click="menuLogout" tag="div">
                 <div class="buttons">
                     <a class="button is-light">
@@ -43,6 +46,9 @@ export default {
         menuSelect(item) {
             this.activeItem = item;
             this.$emit('menuselect',item);
+        },
+        goMainApp() {
+            window.open('/');
         }
     }
 }
