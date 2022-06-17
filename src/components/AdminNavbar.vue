@@ -48,7 +48,7 @@ export default {
             this.$emit('menuselect',item);
         },
         goMainApp() {
-            window.open('/');
+            window.open('/','_self');
         }
     }
 }
