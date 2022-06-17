@@ -13,7 +13,7 @@ Vue.use(Buefy);
 Vue.use(VueMobileDetection);
 
 Vue.prototype.$pmoInfo = {
-  version: "1.2.2"
+  version: "1.2.3"
 };
 
 new Vue({
