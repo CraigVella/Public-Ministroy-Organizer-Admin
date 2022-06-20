@@ -63,7 +63,7 @@ function createOrEditLocation(create, location) {
             location.address,
             location.city,
             location.state,
-            location.state
+            location.zip
         )
     } else {
         return adminLib.updateLocation(
