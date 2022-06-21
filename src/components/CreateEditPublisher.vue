@@ -143,8 +143,6 @@ export default {
             if (!validator.isEmail(this.localPublisher.email)) {
                 adminLib.generalError(this, "Email address must be populated and valid");
                 return false;
-            } else {
-                this.localPublisher.email = validator.normalizeEmail(this.localPublisher.email);
             }
             if (validator.isEmpty(this.localPublisher.firstName, { ignore_whitespace:true })) {
                 adminLib.generalError(this, "First name is a required field");
