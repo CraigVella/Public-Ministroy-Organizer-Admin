@@ -3,12 +3,12 @@
         <div class="section">
             <h1 class="title">{{user.congregation.congName}} Publishers</h1>
             <b-button @click="createNewPub" :disabled="loadingData" class='mb-5' icon-left="account">Add New Publisher</b-button>
-            <b-table :loading="loadingData" :data="publishers" striped
+            <b-table :loading="loadingData" :data="publishers" striped :show-detail-icon="false" detailed detail-key="id"
             :default-sort="['lastName', 'asc']">
-                <b-table-column field="firstName" label="First Name" searchable sortable v-slot="props">
+                <b-table-column field="firstName" label="First Name" sortable v-slot="props">
                     <p :class="props.row.congAdmin === 1 ? 'has-text-weight-bold has-text-success' : ''">{{props.row.firstName}}</p>
                 </b-table-column>
-                <b-table-column field="lastName" label="Last Name" searchable sortable v-slot="props">
+                <b-table-column field="lastName" label="Last Name" sortable v-slot="props">
                     <p :class="props.row.congAdmin === 1 ? 'has-text-weight-bold has-text-success' : ''">{{props.row.lastName}}</p>
                 </b-table-column>
                 <b-table-column field="phone" label="Phone" v-slot="props">
@@ -24,8 +24,23 @@
                     <b-icon :icon="props.row.disabled ? 'account-off' : 'account'" :type="props.row.disabled ? 'is-danger' : 'is-success'"></b-icon>
                 </b-table-column>
                 <b-table-column centered v-slot="props">
-                    <b-button size="is-small" type="is-primary" @click='editPub(props.row)'>Edit</b-button>
+                    <b-field grouped group-multiline>
+                        <b-button class="control" size="is-small" type="is-primary" icon-left='pencil' @click='editPub(props.row)'>Edit</b-button>
+                        <b-button class="control" size="is-small" type="is-primary" icon-left='account-details' @click='props.toggleDetails(props.row)'></b-button>
+                        <b-button class="control" size="is-small" type="is-danger" icon-left='cancel' @click='deletePublisher(props.row)'></b-button>
+                    </b-field>
                 </b-table-column>
+                <template #detail="props">
+                    <div class="content">
+                        <div v-if="props.row.lastLogin === undefined">
+                            No Additional Details
+                        </div>
+                        <div v-else>
+                            <b>Last Login:</b> <i>{{formatDateText(props.row.lastLogin.lastLogin,'MMMM D, YYYY h:mma')}}</i><br />
+                            <b>From IP Address:</b> <i>{{props.row.lastLogin.lastIP}}</i>
+                        </div>
+                    </div>
+                </template>
             </b-table>
         </div>
         <b-modal v-model="createEditProps.open"  trap-focus aria-role="dialog" 
@@ -43,6 +58,7 @@ import PMOLib from 'pmo-lib/PMOLib'
 let adminLib = new PMOLib.PMO(true);
 
 import libPN from 'libphonenumber-js'
+import DayJS from 'dayjs';
 
 export default {
     name: "AdminPublishers",
@@ -94,6 +110,36 @@ export default {
         getPhoneURI(phone) {
             const returnPhone = libPN(phone,'US');
             return returnPhone.getURI();
+        },
+        formatDateText(date, format) {
+            return DayJS(date).format(format).toString();
+        },
+        deletePublisher(row) {
+            this.$buefy.dialog.confirm({
+                    title: 'Deleting publisher',
+                    message: 'Are you sure you want to <b>delete <i>' + row.firstName + ' ' + row.lastName + '</i></b>? This action cannot be undone and will <b>unschedule</b> them from all past and future shifts.',
+                    confirmText: 'Delete Publisher',
+                    type: 'is-danger',
+                    hasIcon: true,
+                    onConfirm: () => {
+                        this.loadingData = true;
+                        adminLib.deletePublisher(row.id).then(r=>{
+                            if (r.api.status.error) {
+                                adminLib.generalError(this,r.api.status.info);
+                            } else {
+                                this.$buefy.toast.open({
+                                    message: "Publisher Deleted!",
+                                    type: 'is-danger'
+                                })
+                            }
+                        }).catch(()=>{
+                            adminLib.generalError(this, "There was an error deleting this publisher, please try again later");
+                        }).finally(()=>{
+                            this.loadingData = false;
+                            this.reloadPublishers();
+                        })
+                    }
+                })
         }
     },
     components: {
